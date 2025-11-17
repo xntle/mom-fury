@@ -105,7 +105,6 @@ func shoot():
 	bullet.setup(bullet_spawn_pos.global_transform)
 	get_tree().root.add_child(bullet)
 	shot_effect.emitting = true
-	set_push(Vector2.RIGHT.rotated(body_rotate.rotation), 200.0, 0.2)
 	# Play shoot sound
 	audio_player.play()
 
