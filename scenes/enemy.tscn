@@ -1,7 +1,7 @@
 [gd_scene load_steps=28 format=3 uid="uid://bdul5xkhnycti"]
 
-[ext_resource type="Shader" path="res://shader/bot_flash.gdshader" id="1_6icbm"]
-[ext_resource type="Script" path="res://scripts/enemy.gd" id="1_cd24m"]
+[ext_resource type="Shader" uid="uid://k1v5fndftrp" path="res://shader/bot_flash.gdshader" id="1_6icbm"]
+[ext_resource type="Script" uid="uid://orm5r6qaf218" path="res://scripts/enemy.gd" id="1_cd24m"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3agpq"]
 size = Vector2(32, 48)
@@ -12,6 +12,81 @@ shader = ExtResource("1_6icbm")
 shader_parameter/poly_color = Color(0.792157, 0.403922, 0.00784314, 1)
 shader_parameter/flash_color = Color(1, 1, 1, 1)
 shader_parameter/flash_modifier = 0.0
+
+[sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_nupch"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_hiojd"]
+animation = &"destroy"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_xtfv4"]
+animation = &"get_damage"
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_c8cx6"]
+graph_offset = Vector2(-421.24, 114.944)
+nodes/output/position = Vector2(440, 180)
+nodes/Add2/node = SubResource("AnimationNodeAdd2_nupch")
+nodes/Add2/position = Vector2(280, 120)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_xtfv4")
+nodes/Animation/position = Vector2(100, 120)
+"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_hiojd")
+"nodes/Animation 2/position" = Vector2(100, 260)
+node_connections = [&"output", 0, &"Add2", &"Add2", 0, &"Animation", &"Add2", 1, &"Animation 2"]
+
+[sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_mt0cv"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1bul0"]
+animation = &"get_damage"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_42jkq"]
+animation = &"one_move"
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_ofapa"]
+graph_offset = Vector2(-362.108, 162.512)
+nodes/output/position = Vector2(440, 180)
+nodes/Add2/node = SubResource("AnimationNodeAdd2_mt0cv")
+nodes/Add2/position = Vector2(260, 160)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_42jkq")
+nodes/Animation/position = Vector2(60, 300)
+"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_1bul0")
+"nodes/Animation 2/position" = Vector2(60, 160)
+node_connections = [&"output", 0, &"Animation 2", &"Add2", 1, &"Animation"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_djaov"]
+animation = &"move"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_rftbb"]
+advance_mode = 2
+
+[sub_resource type="Curve" id="Curve_65211"]
+_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 1, Vector2(1, 0.5), 0.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_h5v5d"]
+xfade_time = 0.1
+xfade_curve = SubResource("Curve_65211")
+advance_mode = 2
+advance_condition = &"is_damaged"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_l6ne3"]
+switch_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_juc1o"]
+advance_mode = 2
+advance_condition = &"is_destroyed"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_nnt1o"]
+switch_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_a7ruc"]
+states/End/position = Vector2(498, 100)
+states/destroy/node = SubResource("AnimationNodeBlendTree_c8cx6")
+states/destroy/position = Vector2(330, 202)
+states/get_damage/node = SubResource("AnimationNodeBlendTree_ofapa")
+states/get_damage/position = Vector2(330, 3)
+states/move/node = SubResource("AnimationNodeAnimation_djaov")
+states/move/position = Vector2(330, 100)
+transitions = ["Start", "move", SubResource("AnimationNodeStateMachineTransition_rftbb"), "move", "get_damage", SubResource("AnimationNodeStateMachineTransition_h5v5d"), "get_damage", "move", SubResource("AnimationNodeStateMachineTransition_l6ne3"), "move", "destroy", SubResource("AnimationNodeStateMachineTransition_juc1o"), "destroy", "move", SubResource("AnimationNodeStateMachineTransition_nnt1o")]
+graph_offset = Vector2(-340, 36)
 
 [sub_resource type="Animation" id="Animation_cy6mt"]
 length = 0.001
@@ -289,93 +364,19 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_enpve"]
 _data = {
-"RESET": SubResource("Animation_cy6mt"),
-"destroy": SubResource("Animation_2h7uc"),
-"get_damage": SubResource("Animation_2n8t7"),
-"move": SubResource("Animation_3v32f"),
-"one_move": SubResource("Animation_dama0")
+&"RESET": SubResource("Animation_cy6mt"),
+&"destroy": SubResource("Animation_2h7uc"),
+&"get_damage": SubResource("Animation_2n8t7"),
+&"move": SubResource("Animation_3v32f"),
+&"one_move": SubResource("Animation_dama0")
 }
-
-[sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_nupch"]
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_hiojd"]
-animation = &"destroy"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_xtfv4"]
-animation = &"get_damage"
-
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_c8cx6"]
-graph_offset = Vector2(-421.24, 114.944)
-nodes/Add2/node = SubResource("AnimationNodeAdd2_nupch")
-nodes/Add2/position = Vector2(280, 120)
-nodes/Animation/node = SubResource("AnimationNodeAnimation_xtfv4")
-nodes/Animation/position = Vector2(100, 120)
-"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_hiojd")
-"nodes/Animation 2/position" = Vector2(100, 260)
-nodes/output/position = Vector2(440, 180)
-node_connections = [&"Add2", 0, &"Animation", &"Add2", 1, &"Animation 2", &"output", 0, &"Add2"]
-
-[sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_mt0cv"]
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1bul0"]
-animation = &"get_damage"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_42jkq"]
-animation = &"one_move"
-
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_ofapa"]
-graph_offset = Vector2(-362.108, 162.512)
-nodes/Add2/node = SubResource("AnimationNodeAdd2_mt0cv")
-nodes/Add2/position = Vector2(260, 160)
-nodes/Animation/node = SubResource("AnimationNodeAnimation_42jkq")
-nodes/Animation/position = Vector2(60, 300)
-"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_1bul0")
-"nodes/Animation 2/position" = Vector2(60, 160)
-nodes/output/position = Vector2(440, 180)
-node_connections = [&"Add2", 1, &"Animation", &"output", 0, &"Animation 2"]
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_djaov"]
-animation = &"move"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_rftbb"]
-advance_mode = 2
-
-[sub_resource type="Curve" id="Curve_65211"]
-_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 1, Vector2(1, 0.5), 0.0, 0.0, 1, 0]
-point_count = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_h5v5d"]
-xfade_time = 0.1
-xfade_curve = SubResource("Curve_65211")
-advance_mode = 2
-advance_condition = &"is_damaged"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_l6ne3"]
-switch_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_juc1o"]
-advance_mode = 2
-advance_condition = &"is_destroyed"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_nnt1o"]
-switch_mode = 2
-
-[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_a7ruc"]
-states/End/position = Vector2(498, 100)
-states/destroy/node = SubResource("AnimationNodeBlendTree_c8cx6")
-states/destroy/position = Vector2(330, 202)
-states/get_damage/node = SubResource("AnimationNodeBlendTree_ofapa")
-states/get_damage/position = Vector2(330, 3)
-states/move/node = SubResource("AnimationNodeAnimation_djaov")
-states/move/position = Vector2(330, 100)
-transitions = ["Start", "move", SubResource("AnimationNodeStateMachineTransition_rftbb"), "move", "get_damage", SubResource("AnimationNodeStateMachineTransition_h5v5d"), "get_damage", "move", SubResource("AnimationNodeStateMachineTransition_l6ne3"), "move", "destroy", SubResource("AnimationNodeStateMachineTransition_juc1o"), "destroy", "move", SubResource("AnimationNodeStateMachineTransition_nnt1o")]
-graph_offset = Vector2(-340, 36)
 
 [sub_resource type="LabelSettings" id="LabelSettings_rmqfi"]
 font_color = Color(0, 0.0705882, 0.0980392, 1)
 
 [node name="enemy" type="CharacterBody2D" groups=["enemy"]]
-z_index = -2
+z_index = -1
+scale = Vector2(0.2, 0.2)
 collision_layer = 2
 collision_mask = 3
 motion_mode = 1
@@ -400,9 +401,6 @@ color = Color(0.792157, 0.403922, 0.00784314, 1)
 polygon = PackedVector2Array(-16, -24, -16, 24, 16, 24, 16, -24)
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_enpve")
-}
 tree_root = SubResource("AnimationNodeStateMachine_a7ruc")
 anim_player = NodePath("../AnimationPlayer")
 parameters/conditions/is_damaged = false
@@ -412,7 +410,7 @@ parameters/get_damage/Add2/add_amount = 1.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_enpve")
+&"": SubResource("AnimationLibrary_enpve")
 }
 
 [node name="DamageTextContainer" type="Node2D" parent="."]

@@ -9,12 +9,6 @@
 [ext_resource type="Texture2D" uid="uid://cip3kw58ruvuk" path="res://assets/interior full/furniture/decorations.png" id="6_dinhu"]
 [ext_resource type="Texture2D" uid="uid://bicux0svb5l3y" path="res://assets/interior full/global.png" id="7_kvuet"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_7nvpe"]
-size = Vector2(1024, 55.3125)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_akqs3"]
-size = Vector2(64, 528)
-
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_trtic"]
 texture = ExtResource("2_gee14")
 2:0/0 = 0
@@ -5463,49 +5457,15 @@ texture = ExtResource("2_gee14")
 [sub_resource type="TileSet" id="TileSet_pl11u"]
 sources/0 = SubResource("TileSetAtlasSource_e1j6l")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7nvpe"]
+size = Vector2(71.87756, 7.917473)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_akqs3"]
+size = Vector2(8.635681, 41.36249)
+
 [node name="Game" type="Node2D"]
 script = ExtResource("1_5vnjt")
 shake_decay_rate = 5.0
-
-[node name="Background" type="Polygon2D" parent="."]
-z_index = -50
-position = Vector2(-3559, -2446)
-scale = Vector2(6.178457, 6.1784573)
-color = Color(0, 0.0705882, 0.0980392, 1)
-polygon = PackedVector2Array(-832, -896, -832, 1408, 2176, 1408, 2176, -896)
-
-[node name="StaticBody2D2" type="StaticBody2D" parent="Background"]
-position = Vector2(9, 0)
-collision_layer = 2
-collision_mask = 3
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Background/StaticBody2D2"]
-position = Vector2(576, 27.6563)
-shape = SubResource("RectangleShape2D_7nvpe")
-
-[node name="StaticBody2D" type="StaticBody2D" parent="Background"]
-collision_layer = 2
-collision_mask = 3
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Background/StaticBody2D"]
-position = Vector2(576, 611)
-shape = SubResource("RectangleShape2D_7nvpe")
-
-[node name="StaticBody2D3" type="StaticBody2D" parent="Background"]
-collision_layer = 2
-collision_mask = 3
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Background/StaticBody2D3"]
-position = Vector2(32, 320)
-shape = SubResource("RectangleShape2D_akqs3")
-
-[node name="StaticBody2D4" type="StaticBody2D" parent="Background"]
-collision_layer = 2
-collision_mask = 3
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Background/StaticBody2D4"]
-position = Vector2(1120, 320)
-shape = SubResource("RectangleShape2D_akqs3")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(576, 323)
@@ -5534,6 +5494,48 @@ z_index = -2
 position = Vector2(453, 334)
 tile_map_data = PackedByteArray("AAD8//r/AAAFACMAAAD8//v/AAAFACMAAAD9//n/AAADACMAAAD+//n/AAADACMAAAD///n/AAADACMAAAAAAPn/AAADACMAAAD8//z/AAAFACMAAAD8//3/AAAFACMAAAD8//7/AAAFACMAAAABAPn/AAADACMAAAACAPn/AAABACIAAAD8////AAAFACMAAAAGAPn/AAADACMAAAD8//n/AAAAACIAAAD8/wAAAAAFACMAAAD8/wEAAAAFACMAAAD8/wIAAAAFACMAAAD8/wMAAAAFACMAAAD8/wQAAAAFACMAAAD8/wUAAAAFACMAAAATAPn/AAAGACMAAAATAPr/AAAGACMAAAATAPv/AAAGACMAAAATAPz/AAAGACMAAAATAP3/AAAGACMAAAATAP7/AAAGACMAAAATAP//AAAGACMAAAATAAAAAAAGACMAAAATAAEAAAAGACMAAAATAAIAAAAGACMAAAATAAMAAAAGACMAAAATAAQAAAAGACMAAAATAAUAAAAGACMAAAACAPr/AAAGACIAAAACAPv/AAAGACIAAAAEAPv/AAAFACIAAAAEAPr/AAAEACIAAAAEAPn/AAAAACIAAAAFAPn/AAADACMAAAAHAPn/AAABACIAAAAHAPr/AAAGACIAAAAHAPv/AAAGACIAAAAHAPz/AAAGACIAAAAHAP3/AAAGACIAAAAHAP7/AAAGACIAAAACAP3/AAACACMAAAADAP3/AAADACMAAAAEAP3/AAAEACMAAAACAPz/AAAGACIAAAAEAPz/AAAFACIAAAA=")
 tile_set = SubResource("TileSet_pl11u")
+
+[node name="Background" type="Polygon2D" parent="."]
+z_index = -50
+position = Vector2(-3559, -2446)
+scale = Vector2(6.178457, 6.1784573)
+color = Color(0, 0.0705882, 0.0980392, 1)
+polygon = PackedVector2Array(-832, -896, -832, 1408, 2176, 1408, 2176, -896)
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="Background"]
+position = Vector2(9, 0)
+collision_layer = 2
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Background/StaticBody2D2"]
+z_index = 1
+position = Vector2(658.64246, 427.77667)
+shape = SubResource("RectangleShape2D_7nvpe")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Background"]
+collision_layer = 2
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Background/StaticBody2D"]
+position = Vector2(673.79285, 469.37283)
+shape = SubResource("RectangleShape2D_7nvpe")
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="Background"]
+collision_layer = 2
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Background/StaticBody2D3"]
+position = Vector2(635.11005, 450.11237)
+shape = SubResource("RectangleShape2D_akqs3")
+
+[node name="StaticBody2D4" type="StaticBody2D" parent="Background"]
+collision_layer = 2
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Background/StaticBody2D4"]
+z_index = 5
+position = Vector2(705.19226, 445.74234)
+shape = SubResource("RectangleShape2D_akqs3")
 
 [node name="Ground" type="Polygon2D" parent="."]
 visible = false
