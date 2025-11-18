@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bduw5gb057ino"]
 
-[ext_resource type="Script" path="res://scripts/game.gd" id="1_5vnjt"]
+[ext_resource type="Script" uid="uid://bce6sj6kvwsh" path="res://scripts/game.gd" id="1_5vnjt"]
 [ext_resource type="PackedScene" uid="uid://cqpatfifsn3sg" path="res://scenes/player.tscn" id="2_n47hv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7nvpe"]
@@ -15,10 +15,13 @@ shake_decay_rate = 5.0
 
 [node name="Background" type="Polygon2D" parent="."]
 z_index = -50
+position = Vector2(-3569, -2073)
+scale = Vector2(6.178457, 6.1784573)
 color = Color(0, 0.0705882, 0.0980392, 1)
 polygon = PackedVector2Array(-832, -896, -832, 1408, 2176, 1408, 2176, -896)
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="Background"]
+position = Vector2(9, 0)
 collision_layer = 2
 collision_mask = 3
 
@@ -56,6 +59,7 @@ color = Color(0.913725, 0.847059, 0.65098, 1)
 polygon = PackedVector2Array(64, 56, 64, 320, 64, 584, 1088, 584, 1088, 56)
 
 [node name="Player" parent="." instance=ExtResource("2_n47hv")]
+position = Vector2(580, 323)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(576, 323)

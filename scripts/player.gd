@@ -1,18 +1,26 @@
 extends CharacterBody2D
 
 @export var speed: float = 360.0
-@export var lr_flag: bool = true # Enable body left right animation
-@export var rotate_flag: bool = true # Enable body rotation 
+@export var lr_flag: bool = true
+@export var rotate_flag: bool = true
 
-var screen_size # Size of the game window.
-var lr: bool = true # Default face right
-var aim_pos: Vector2 = Vector2(0, 0)
+# --- Roll system ---
+@export var roll_speed: float = 900.0
+@export var roll_time: float = 0.18
+@export var roll_cooldown: float = 0.4
+var is_rolling: bool = false
+var roll_timer: float = 0.0
+var roll_cd: float = 0.0
+var roll_dir: Vector2 = Vector2.ZERO
+
+var screen_size
+var lr: bool = true
+var aim_pos: Vector2 = Vector2.ZERO
 var is_shot_cd: bool = false
-var push_dir: Vector2 = Vector2(0, 0)
+var push_dir: Vector2 = Vector2.ZERO
 var push_strength: float = 0.0
 var push_timer: float = 0.0
 
-# Reference
 @onready var body_lr: Polygon2D = $BodyLR
 @onready var body_rotate: Polygon2D = $BodyRotate
 @onready var body_lr_player: AnimationPlayer = $BodyLRPlayer
@@ -30,8 +38,9 @@ func _ready():
 	hide()
 
 func _physics_process(delta):
-	velocity = Vector2.ZERO # The player's movement vector.
-	# Movement input
+	velocity = Vector2.ZERO
+
+	# --- Movement input ---
 	if Input.is_action_pressed("move_right"):
 		velocity.x += 1
 	if Input.is_action_pressed("move_left"):
@@ -40,22 +49,51 @@ func _physics_process(delta):
 		velocity.y += 1
 	if Input.is_action_pressed("move_up"):
 		velocity.y -= 1
-	# Shot input
+
+	if velocity != Vector2.ZERO:
+		velocity = velocity.normalized() * speed
+
+	# --- Roll cooldown ---
+	if roll_cd > 0.0:
+		roll_cd -= delta
+
+	# --- Rolling ---
+	if is_rolling:
+		roll_timer -= delta
+		if roll_timer <= 0.0:
+			is_rolling = false
+			roll_cd = roll_cooldown
+	else:
+		# Try to start a roll
+		if Input.is_action_just_pressed("roll") and roll_cd <= 0.0:
+			if velocity != Vector2.ZERO:
+				roll_dir = velocity.normalized()       # 8-way roll direction
+			else:
+				roll_dir = Vector2.RIGHT if lr else Vector2.LEFT
+
+			is_rolling = true
+			roll_timer = roll_time
+
+	# Use roll velocity if rolling
+	if is_rolling:
+		velocity = roll_dir * roll_speed
+		move_trail_effect.emitting = true
+	else:
+		move_trail_effect.emitting = velocity != Vector2.ZERO
+
+	# --- Shooting ---
 	if Input.is_action_pressed("shot") and not is_shot_cd:
 		shoot()
 		is_shot_cd = true
 		shot_timer.start(0.2)
-	# Normalize velocity if move along x and y together
-	if velocity.length() > 0:
-		velocity = velocity.normalized() * speed
-		move_trail_effect.emitting = true # Play movement trail effect
-	# Handle body_lr
+
 	update_body_lr()
-	# Handle push
 	push_back(delta)
-	# Limit the player movement, add your character scale if needed
+
+	# Keep player inside screen
 	position.x = clamp(position.x, 0, screen_size.x)
 	position.y = clamp(position.y, 0, screen_size.y)
+
 	move_and_slide()
 
 func _input(event):
@@ -69,14 +107,13 @@ func setup(pos: Vector2):
 func update_body_lr():
 	if not lr_flag:
 		return
-	# Play body animation
+
 	if velocity.length() > 0:
-		# Move up / down
 		if lr:
 			body_lr_player.play("MoveR")
 		else:
 			body_lr_player.play("MoveL")
-		# Move left / right
+
 		if velocity.x > 0:
 			body_lr_player.play("MoveR")
 			body_lr_collider.scale.x = -1
@@ -86,7 +123,6 @@ func update_body_lr():
 			body_lr_collider.scale.x = 1
 			lr = false
 	else:
-		# Idle
 		if lr:
 			body_lr_player.play("IdleR")
 		else:
@@ -95,7 +131,6 @@ func update_body_lr():
 func update_body_rotate(mouse_pos: Vector2):
 	if not rotate_flag:
 		return
-	# Rotate with mouse
 	body_rotate.look_at(mouse_pos)
 	aim_pos = mouse_pos.normalized()
 
@@ -105,7 +140,6 @@ func shoot():
 	bullet.setup(bullet_spawn_pos.global_transform)
 	get_tree().root.add_child(bullet)
 	shot_effect.emitting = true
-	# Play shoot sound
 	audio_player.play()
 
 func set_push(dir: Vector2, strength: float, timer: float):
