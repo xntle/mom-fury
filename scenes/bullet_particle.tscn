@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://02vm5q8j6lmx"]
 
-[ext_resource type="Script" path="res://scripts/bullet_particle.gd" id="1_8lg3l"]
+[ext_resource type="Script" uid="uid://ctkswnbva0yk0" path="res://scripts/Weapon/Bullet/bullet_particle.gd" id="1_8lg3l"]
 
 [sub_resource type="Curve" id="Curve_wkupy"]
 _data = [Vector2(0, 0.846154), 0.0, 1.4, 0, 0, Vector2(0.604938, 0.571428), -2.52979, -2.52979, 0, 0, Vector2(1, 0.153846), 0.0, 0.0, 0, 0]
@@ -28,8 +28,8 @@ modulate = Color(0, 0.372549, 0.45098, 1)
 position = Vector2(-8, 0)
 emitting = false
 amount = 10
-process_material = SubResource("ParticleProcessMaterial_ia26w")
 lifetime = 0.1
 one_shot = true
+process_material = SubResource("ParticleProcessMaterial_ia26w")
 
 [connection signal="finished" from="BulletEffect" to="." method="_on_bullet_effect_finished"]
