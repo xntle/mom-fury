@@ -430,5 +430,14 @@ scale = Vector2(1.24572, 1.41643)
 color = Color(0.682353, 0.12549, 0.0705882, 1)
 polygon = PackedVector2Array(-19.266, -22.592, 0, -5.64801, 19.266, -22.592, 25.6879, -16.944, 6.42199, 0, 25.6879, 16.944, 19.266, 22.592, 0, 5.64801, -19.266, 22.592, -25.6879, 16.944, -6.42199, 0, -25.6879, -16.944)
 
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
+light_mask = 3
+visibility_layer = 3
+scale = Vector2(0.99999994, 0.99999994)
+shape = SubResource("RectangleShape2D_3agpq")
+
 [connection signal="animation_finished" from="AnimationTree" to="." method="_on_animation_tree_animation_finished"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

@@ -4,11 +4,14 @@ signal enemy_destroyed(enemy)
 
 @export var health: int = 100
 @export var speed: float = 50.0
+@export var damage: float = 10.0
 
 var player: CharacterBody2D
 var push_dir: Vector2 = Vector2(0, 0)
 var push_strength: float = 0.0
 var push_timer: float = 0.0
+var bounce_timer: float = 0.0
+var default_bounce_timer: float = 0.25
 
 @onready var animation_tree: AnimationTree = $AnimationTree
 @onready var damage_text: Label = $DamageTextContainer/DamageText
@@ -24,7 +27,12 @@ func setup(pos: Vector2, _player: CharacterBody2D):
 
 func _physics_process(delta):
 	var dir = (player.global_position - global_position).normalized()
-	position += dir * delta * speed
+	bounce_timer = max(0.0,bounce_timer-delta)
+	#This feels hella clunky cuz the velocity jumps to 0 instead of decelerating ima make it work better later
+	if bounce_timer == 0.0: ##Basically if it's not currently bouncing then it will move
+		position += dir * delta * speed
+	elif bounce_timer >= 0.1: ##If the bounce timer is more than 0.1s it will bounce backwards. So for the last 0.1s after bouncing it will stand still to simulate recoil.
+		position -= dir * delta * speed * 2 ##IDEALLY it should linearly increase from -2 to 1(as a factor of the dir vector). Rather than jumping from -2 to 0 to 1. U got that Kyle
 	# Handle push
 	push_back(delta)
 
@@ -68,3 +76,9 @@ func _on_animation_player_animation_finished(anim_name):
 	if anim_name == "destroy":
 		#animation_tree['parameters/conditions/is_destroyed'] = false
 		pass
+
+#Logic for when the enemy collides with the player.
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body == player and body.is_intangible == false:
+		player.take_damage(damage)
+		bounce_timer+=default_bounce_timer
