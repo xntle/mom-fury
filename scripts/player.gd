@@ -94,7 +94,7 @@ func _physics_process(delta):
 	position.x = clamp(position.x, 0, screen_size.x)
 	position.y = clamp(position.y, 0, screen_size.y)
 
-	move_and_slide()
+	position+=velocity*delta
 
 func _input(event):
 	if event is InputEventMouseMotion:
