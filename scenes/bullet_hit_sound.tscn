@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://3d1d7wtd7318"]
 
-[ext_resource type="Script" path="res://scripts/bullet_hit_sound.gd" id="1_eb6uu"]
+[ext_resource type="Script" uid="uid://cy3l20xnvsfmu" path="res://scripts/Weapon/Bullet/bullet_hit_sound.gd" id="1_eb6uu"]
 [ext_resource type="AudioStream" uid="uid://dq05a2ska8t6s" path="res://assets/sound_effects/hitHurt.wav" id="1_rs25w"]
 
 [node name="BulletHitSound" type="Node2D"]
