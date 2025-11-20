@@ -3,15 +3,17 @@ extends CharacterBody2D
 @export var speed: float = 360.0
 @export var lr_flag: bool = true
 @export var rotate_flag: bool = true
-
+@export var max_health: float = 100.0
 # --- Roll system ---
 @export var roll_speed: float = 900.0
 @export var roll_time: float = 0.18
 @export var roll_cooldown: float = 0.4
+var 	current_health=max_health
 var is_rolling: bool = false
 var roll_timer: float = 0.0
 var roll_cd: float = 0.0
 var roll_dir: Vector2 = Vector2.ZERO
+var is_intangible: bool = false
 
 var screen_size
 var lr: bool = true
@@ -20,6 +22,8 @@ var is_shot_cd: bool = false
 var push_dir: Vector2 = Vector2.ZERO
 var push_strength: float = 0.0
 var push_timer: float = 0.0
+
+signal health_changed(new_health: int)
 
 @onready var body_lr: Polygon2D = $BodyLR
 @onready var body_rotate: Polygon2D = $BodyRotate
@@ -62,6 +66,7 @@ func _physics_process(delta):
 		roll_timer -= delta
 		if roll_timer <= 0.0:
 			is_rolling = false
+			is_intangible = false
 			roll_cd = roll_cooldown
 	else:
 		# Try to start a roll
@@ -72,6 +77,7 @@ func _physics_process(delta):
 				roll_dir = Vector2.RIGHT if lr else Vector2.LEFT
 
 			is_rolling = true
+			is_intangible = true
 			roll_timer = roll_time
 
 	# Use roll velocity if rolling
@@ -95,6 +101,14 @@ func _physics_process(delta):
 	position.y = clamp(position.y, 0, screen_size.y)
 
 	position+=velocity*delta
+	
+	# Damage and death logic
+	if current_health >= max_health:
+		current_health = max_health
+	if current_health <= 0.0:
+		current_health = 0.0
+		#Add death logic here
+		get_tree().quit()
 
 func _input(event):
 	if event is InputEventMouseMotion:
@@ -103,6 +117,10 @@ func _input(event):
 func setup(pos: Vector2):
 	position = pos
 	show()
+	
+func take_damage(amount: int) -> void:
+	current_health -= amount
+	emit_signal("health_changed", current_health)
 
 func update_body_lr():
 	if not lr_flag:

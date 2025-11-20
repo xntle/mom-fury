@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bjxbgp7st5ob1" path="res://scripts/player.gd" id="1_sy1wy"]
 [ext_resource type="AudioStream" uid="uid://b5y5j2t81dq1l" path="res://assets/sound_effects/laserShoot.wav" id="2_qiobg"]
 [ext_resource type="Material" uid="uid://bcuo1xumj4tyr" path="res://assets/player_move_trail.tres" id="2_vodir"]
-[ext_resource type="PackedScene" uid="uid://c7ut3rlvimc6m" path="res://scenes/weapon.tscn" id="3_dqkch"]
+[ext_resource type="PackedScene" uid="uid://bpgjbxh7xb7s0" path="res://scenes/weapon.tscn" id="3_dqkch"]
 [ext_resource type="Texture2D" uid="uid://cyrqnx3ha4lux" path="res://assets/sound_effects/mom.png" id="3_qlg0r"]
 
 [sub_resource type="Animation" id="Animation_p6stl"]

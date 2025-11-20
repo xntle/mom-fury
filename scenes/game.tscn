@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=4 uid="uid://bduw5gb057ino"]
+[gd_scene load_steps=34 format=4 uid="uid://bduw5gb057ino"]
 
 [ext_resource type="Script" uid="uid://bce6sj6kvwsh" path="res://scripts/game.gd" id="1_5vnjt"]
 [ext_resource type="Script" uid="uid://b7hpxdmpua5la" path="res://scripts/Camera/follow_camera.gd" id="2_0tnpc"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://bgx2ojn3733h" path="res://assets/interior full/basics/grass.png" id="10_vtaks"]
 [ext_resource type="Script" uid="uid://bgs4chdd38ivf" path="res://scripts/pause_menu.gd" id="11_kvpfn"]
 [ext_resource type="FontFile" uid="uid://box1b2tla1jkp" path="res://assets/fonts/MegamaxJonathanToo-YqOq2.ttf" id="12_dinhu"]
+[ext_resource type="Script" uid="uid://dxygajgq6eycc" path="res://scripts/UI/health_label.gd" id="13_kvuet"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_trtic"]
 texture = ExtResource("2_gee14")
@@ -6844,5 +6845,14 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_kvuet")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_trtic")
 theme_override_styles/hover = SubResource("StyleBoxFlat_ir15t")
 text = "QUIT"
+
+[node name="HealthLabel" type="Label" parent="UI" node_paths=PackedStringArray("player")]
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_fonts/font = ExtResource("12_dinhu")
+theme_override_font_sizes/font_size = 32
+text = "Health: 100.0"
+script = ExtResource("13_kvuet")
+player = NodePath("../../Player")
 
 [connection signal="timeout" from="CameraSlowMoTimer" to="." method="_on_camera_slow_mo_timer_timeout"]
