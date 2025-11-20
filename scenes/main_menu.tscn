@@ -4,7 +4,7 @@
 [ext_resource type="FontFile" uid="uid://box1b2tla1jkp" path="res://assets/fonts/MegamaxJonathanToo-YqOq2.ttf" id="2_ekxnf"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vue75"]
-bg_color = Color(0, 0.7009996, 0.5718057, 1)
+bg_color = Color(0.07058824, 0.20784314, 0.14117648, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
