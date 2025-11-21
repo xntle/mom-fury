@@ -26,15 +26,27 @@ func setup(pos: Vector2, _player: CharacterBody2D):
 	player = _player
 
 func _physics_process(delta):
+	var max_speed = 1.0
+	var min_speed = -2.0
 	var dir = (player.global_position - global_position).normalized()
-	bounce_timer = max(0.0,bounce_timer-delta)
-	#This feels hella clunky cuz the velocity jumps to 0 instead of decelerating ima make it work better later
-	if bounce_timer == 0.0: ##Basically if it's not currently bouncing then it will move
-		position += dir * delta * speed
-	elif bounce_timer >= 0.1: ##If the bounce timer is more than 0.1s it will bounce backwards. So for the last 0.1s after bouncing it will stand still to simulate recoil.
-		position -= dir * delta * speed * 2 ##IDEALLY it should linearly increase from -2 to 1(as a factor of the dir vector). Rather than jumping from -2 to 0 to 1. U got that Kyle
+	bounce_timer = max(0.0, bounce_timer - delta)
+
+	var move_factor := 1.0
+
+	if bounce_timer > 0.0:
+		# t goes from 0 (just hit) to 1 (bounce over)
+		var t := 1.0 - (bounce_timer / default_bounce_timer)
+		t = clamp(t, 0.0, 1.0)
+
+		# linearly go from -2 (hard knockback) to 1 (normal chase)
+		move_factor = lerp(min_speed, max_speed, t)
+	
+	# apply movement with the factor
+	position += dir * delta * speed * move_factor
+
 	# Handle push
 	push_back(delta)
+
 
 func get_hit(damage: int, bullet_trans: Transform2D):
 	health -= damage
