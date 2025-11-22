@@ -381,6 +381,7 @@ collision_layer = 2
 collision_mask = 3
 motion_mode = 1
 script = ExtResource("1_cd24m")
+bounce_ratio = -5.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 light_mask = 3
